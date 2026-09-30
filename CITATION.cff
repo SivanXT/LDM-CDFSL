@@ -1,0 +1,55 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite the paper below."
+title: "Language Does Matter for Cross-Domain Few-Shot Visual Feature Enhancement"
+type: software
+authors:
+  - family-names: Zhou
+    given-names: Fei
+  - family-names: Zhang
+    given-names: Xiwen
+  - family-names: Qiu
+    given-names: Qingqing
+  - family-names: Zhang
+    given-names: Lei
+  - family-names: Wei
+    given-names: Wei
+  - family-names: Ding
+    given-names: Chen
+  - family-names: Zhang
+    given-names: Yi
+  - family-names: Li
+    given-names: Liang
+  - family-names: Yue
+    given-names: Xiangyu
+  - family-names: Zhang
+    given-names: Yanning
+url: "https://openaccess.thecvf.com/content/CVPR2026/html/Zhou_Language_Does_Matter_for_Cross-Domain_Few-Shot_Visual_Feature_Enhancement_CVPR_2026_paper.html"
+preferred-citation:
+  type: conference-paper
+  title: "Language Does Matter for Cross-Domain Few-Shot Visual Feature Enhancement"
+  authors:
+    - family-names: Zhou
+      given-names: Fei
+    - family-names: Zhang
+      given-names: Xiwen
+    - family-names: Qiu
+      given-names: Qingqing
+    - family-names: Zhang
+      given-names: Lei
+    - family-names: Wei
+      given-names: Wei
+    - family-names: Ding
+      given-names: Chen
+    - family-names: Zhang
+      given-names: Yi
+    - family-names: Li
+      given-names: Liang
+    - family-names: Yue
+      given-names: Xiangyu
+    - family-names: Zhang
+      given-names: Yanning
+  collection-title: "Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)"
+  year: 2026
+  start: 7946
+  end: 7956
+  url: "https://openaccess.thecvf.com/content/CVPR2026/html/Zhou_Language_Does_Matter_for_Cross-Domain_Few-Shot_Visual_Feature_Enhancement_CVPR_2026_paper.html"

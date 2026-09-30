@@ -1,0 +1,63 @@
+name: Bug report
+description: Report a reproducible problem in the code
+title: "[Bug]: "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: Thank you for providing enough detail to reproduce the problem. Remove private paths, credentials, and sensitive data from all fields.
+  - type: textarea
+    id: description
+    attributes:
+      label: Problem description
+      description: Describe what happened and what you expected instead.
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Include the operating system, Python version, PyTorch version, CUDA version, GPU model, and installation method.
+      placeholder: |
+        OS:
+        Python:
+        PyTorch:
+        CUDA:
+        GPU:
+        Installation:
+    validations:
+      required: true
+  - type: input
+    id: dataset
+    attributes:
+      label: Dataset
+      description: Give the dataset CLI name and shot setting. Do not upload dataset content.
+      placeholder: isic, 1-shot
+    validations:
+      required: true
+  - type: textarea
+    id: command
+    attributes:
+      label: Command
+      description: Paste the complete command with paths anonymized.
+      render: shell
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs and traceback
+      description: Paste the complete relevant output with sensitive information removed.
+      render: shell
+    validations:
+      required: true
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checks
+      options:
+        - label: I searched existing issues for the same problem.
+          required: true
+        - label: I removed credentials, personal information, private paths, and dataset content.
+          required: true

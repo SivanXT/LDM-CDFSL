@@ -1,0 +1,94 @@
+import os
+import glob
+from pathlib import Path
+
+from torch.utils.data import Dataset
+import torch.nn.functional as F
+import torch
+import PIL.Image as Image
+import numpy as np
+
+
+class DatasetDeepglobe(Dataset):
+    def __init__(self, datapath, fold, transform, split, shot, num=600):
+        self.split = split
+        self.benchmark = 'deepglobe'
+        self.shot = shot
+        self.num = num
+
+        self.base_path = os.path.join(datapath, 'Deepglobe', '04_train_cat')
+
+        self.categories = ['1','2','3','4','5','6']
+
+        self.class_ids = range(0, 6)
+        self.img_metadata_classwise = self.build_img_metadata_classwise()
+
+        self.transform = transform
+
+    def __len__(self):
+        return self.num
+
+    def __getitem__(self, idx):
+        query_name, support_names, class_sample = self.sample_episode(idx)
+        query_img, query_mask, support_imgs, support_masks = self.load_frame(query_name, support_names)
+
+        query_img = self.transform(query_img)
+        query_mask = F.interpolate(query_mask.unsqueeze(0).unsqueeze(0).float(), query_img.size()[-2:], mode='nearest').squeeze()
+
+        support_imgs = torch.stack([self.transform(support_img) for support_img in support_imgs])
+
+        support_masks_tmp = []
+        for smask in support_masks:
+            smask = F.interpolate(smask.unsqueeze(0).unsqueeze(0).float(), support_imgs.size()[-2:], mode='nearest').squeeze()
+            support_masks_tmp.append(smask)
+        support_masks = torch.stack(support_masks_tmp)
+
+        return support_imgs, support_masks, query_img, query_mask, class_sample, support_names, query_name
+
+    def load_frame(self, query_name, support_names):
+        query_image_path = query_name
+        support_image_paths = list(support_names)
+        query_img = Image.open(query_image_path).convert('RGB')
+        support_imgs = [Image.open(name).convert('RGB') for name in support_image_paths]
+
+        query_id = os.path.splitext(os.path.basename(query_image_path))[0]
+        ann_path = os.path.join(self.base_path, Path(query_image_path).parents[2].name, 'test', 'groundtruth')
+        query_mask_path = os.path.join(ann_path, query_id) + '.png'
+        support_ids = [os.path.splitext(os.path.basename(name))[0] for name in support_image_paths]
+        support_mask_paths = [os.path.join(ann_path, sid) + '.png' for sid in support_ids]
+
+        query_mask = self.read_mask(query_mask_path)
+        support_masks = [self.read_mask(name) for name in support_mask_paths]
+
+        return query_img, query_mask, support_imgs, support_masks
+
+    def read_mask(self, img_name):
+        mask = torch.tensor(np.array(Image.open(img_name).convert('L')))
+        mask[mask < 128] = 0
+        mask[mask >= 128] = 1
+        return mask
+
+    def sample_episode(self, idx):
+        class_id = idx % len(self.class_ids)
+        class_sample = self.categories[class_id]
+        query_name = np.random.choice(self.img_metadata_classwise[class_sample], 1, replace=False)[0]
+        support_names = []
+        while True:  
+            support_name = np.random.choice(self.img_metadata_classwise[class_sample], 1, replace=False)[0]
+            if query_name != support_name: support_names.append(support_name)
+            if len(support_names) == self.shot: break
+
+        return query_name, support_names, class_id
+
+
+    def build_img_metadata_classwise(self):
+        img_metadata_classwise = {}
+        for cat in self.categories:
+            img_metadata_classwise[cat] = []
+
+        for cat in self.categories:
+            img_paths = sorted([path for path in glob.glob('%s/*' % os.path.join(self.base_path, cat, 'test', 'origin'))])
+            for img_path in img_paths:
+                if os.path.basename(img_path).split('.')[1] == 'jpg':
+                    img_metadata_classwise[cat] += [img_path]
+        return img_metadata_classwise

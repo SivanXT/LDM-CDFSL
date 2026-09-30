@@ -1,0 +1,47 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+build/
+dist/
+*.egg-info/
+
+# Environments and local configuration
+.venv/
+venv/
+env/
+.conda/
+.env
+.env.*
+
+# Editors and operating systems
+.idea/
+.vscode/
+*.swp
+.DS_Store
+
+# Datasets, model caches, and downloaded weights
+/datasets/
+/checkpoints/
+/pretrained/
+.cache/
+huggingface/
+torch_home/
+
+# Experiment outputs and logs
+/outdir/
+outputs/
+runs/
+wandb/
+tensorboard/
+*.log
+
+# Model artifacts
+*.pth
+*.pt
+*.ckpt
