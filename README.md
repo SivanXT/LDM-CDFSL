@@ -21,10 +21,6 @@ Code for the cross-domain few-shot semantic segmentation experiments in **Langua
 
 The method augments visual features with linguistic descriptions at both image and domain levels. BLIP generates an image caption, a frozen CLIP text encoder retains token-level language features, and a residual cross-attention Feature Refiner injects those features into an IFA segmentation model. Source-domain episodic training uses PASCAL VOC, followed by optional target-domain few-shot fine-tuning and evaluation.
 
-## Scope
-
-This release contains the **IFA + ResNet implementation for cross-domain few-shot semantic segmentation (CD-FSS)**. It supports ISIC, Chest X-Ray, FSS-1000, and DeepGlobe as target domains. The image-classification and object-detection experiments in the paper are not included.
-
 ## Paper results
 
 The following mIoU (%) values are reported in Table 2 of the paper. They are included for reference and are **not claimed as reproduced by this repository**.
